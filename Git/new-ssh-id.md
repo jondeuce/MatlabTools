@@ -5,7 +5,9 @@ https://snipe.net/2013/04/11/multiple-github-deploy-keys-single-server/
 
     ssh-keygen -t rsa -C "your_email@example.com"
 
-2) When prompted with the the statement below type in a unique name(i.e.,foo1_rsa).The file will be created in your current directory and you may need to move it to .ssh if you want to be tidy:
+2) When prompted with the the statement below type in a unique name (i.e., 
+   foo1_rsa). The file will be created in your current directory and you 
+   may need to move it to .ssh if you want to be tidy:
 
     Enter file in which to save the key (/Users/you/.ssh/id_rsa): [Press enter]
 
@@ -22,3 +24,15 @@ Which may be empty:
     Host chong github.com
     Hostname github.com
     IdentityFile ~/.ssh/foo2_rsa
+
+---------------------------------
+----- Example ~/.ssh/config -----
+---------------------------------
+
+Host jondeuce-github github.com
+Hostname github.com
+IdentityFile ~/.ssh/jondeuce_github_id
+
+Host jondeuce-gitlab gitlab.com
+Hostname gitlab.com
+IdentityFile ~/.ssh/jondeuce_gitlab_id
