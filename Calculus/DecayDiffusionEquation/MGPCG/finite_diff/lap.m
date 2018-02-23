@@ -1,6 +1,6 @@
 function [x] = lap(x, Mask, h)
-%LAP Discrete Laplacian - central difference approximation
-%   Detailed explanation goes here
+%LAP [x] = lap(x, Mask, h)
+% Discrete Laplacian - central difference approximation
 
     if nargin < 2 || isempty(Mask), Mask = true(size(x)); end
     if nargin < 3,  h = [1, 1, 1]; end

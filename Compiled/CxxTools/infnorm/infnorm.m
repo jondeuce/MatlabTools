@@ -14,9 +14,9 @@ end
 
 function build_infnorm
 
-pEigen = what('Eigen');
-pBlaze = what('blaze-3.2');
-libincludes = {['-I"',pEigen(1).path,'"'],['-I"',pBlaze(1).path,'"']};
+EigenPath = what('Eigen');
+BlazePath = what('blaze-3.2');
+libincludes = {['-I"',EigenPath(1).path,'"'],['-I"',BlazePath(1).path,'"']};
 flags = '-O3 -mavx -mfma -DNDEBUG';
 if isunix; flags = [flags,' -lgomp -fopenmp -std=c++14']; end
 

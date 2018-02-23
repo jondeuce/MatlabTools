@@ -1,13 +1,12 @@
-function [x] = grad_adj(x, y, z, Mask, h)
-%GRAD_ADJ Adjoint of grad
-%   Detailed explanation goes here
+function [dx] = grad_adj(x, y, z, Mask, h)
+%GRAD_ADJ [dx] = grad_adj(x, y, z, Mask, h)
 
     if nargin < 4 || isempty(Mask), Mask = true(size(x)); end
     if nargin < 5,  h = [1, 1, 1]; end
     
     if ~isa(Mask, 'logical'), Mask = logical(Mask); end
     
-    x = grad_adj_mex(x, y, z, Mask, h);
+    dx = grad_adj_mex(x, y, z, Mask, h);
     
 end
 

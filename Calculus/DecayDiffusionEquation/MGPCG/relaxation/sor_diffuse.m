@@ -1,5 +1,5 @@
-function y = sor_diffuse(b, x, w, h, D, f, c, iter, dir)
-%SOR_DIFFUSE Successive-overrelaxaiton scheme for the decay diffusion
+function y = sor_diffuse(b, x, w, h, D, f, s, c, iter, dir)
+%SOR_DIFFUSE Successive-overrelaxaiton scheme for the Bloch-Torrey
 % operator with 2nd order central difference spatial derivatives and
 % periodic boundary conditions. The operator is:
 % 
@@ -16,20 +16,26 @@ function y = sor_diffuse(b, x, w, h, D, f, c, iter, dir)
 % as b. The result may be multiplied by an arbitrary real scalar constant c
 % as well, if provided.
 
-    if nargin < 9 || isempty(dir)
+    if nargin < 10 || isempty(dir)
         dir = 0;
     elseif dir ~= 0
         dir = 1;
     end
     
-    if nargin < 8 || isempty(iter)
+    if nargin < 9 || isempty(iter)
         iter = 10;
     end
     
-    if nargin < 7 || isempty(c)
+    if nargin < 8 || isempty(c)
         c = 1;
     elseif ~isscalar(c) || ~isreal(c)
         error('c must be a constant real scalar.');
+    end
+    
+    if nargin < 7 || isempty(s)
+        s = 0;
+    elseif ~isscalar(s) || ~isreal(s)
+        error('s must be a constant real scalar.');
     end
     
     if nargin < 6 || isempty(f)
@@ -69,17 +75,17 @@ function y = sor_diffuse(b, x, w, h, D, f, c, iter, dir)
         error( 'Dimension of b must be 3.' );
     end
     
+    if isa(b,'single'); b = double(b); end
+    if isa(x,'single'); x = double(x); end
+    if isa(f,'single'); f = double(f); end
+    
+    if isreal(b); b = complex(b); end
+    if isreal(x); x = complex(x); end
+    if isreal(f); f = complex(f); end
+        
     %----------------------------------------------------------------------
     
-    b = force_complex_double(b);
-    x = force_complex_double(x);
-    f = force_complex_double(f);
-    
-    y = sor_diffuse_cd(b, x, w, h, D, f, 0.0, c, iter, dir);
+    y = sor_diffuse_cd(b, x, w, h, D, f, s, c, iter, dir);
     
 end
 
-function z = force_complex_double(z)
-if isa(z,'single'), z = double(z); end
-if isreal(z), z = complex(z); end
-end

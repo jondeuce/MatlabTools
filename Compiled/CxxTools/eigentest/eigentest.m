@@ -25,6 +25,6 @@ CFLAGS = ['CFLAGS="',flags,'"'];
 COPTIMFLAGS = ['COPTIMFLAGS="',flags,'"'];
 LDOPTIMFLAGS = ['LDOPTIMFLAGS="',flags,'"'];
 
-mex(CFLAGS,COPTIMFLAGS,LDOPTIMFLAGS,libincludes{:},'infnorm.cpp');
+mex(CFLAGS,COPTIMFLAGS,LDOPTIMFLAGS,libincludes{:},'eigentest.cpp');
 
 end

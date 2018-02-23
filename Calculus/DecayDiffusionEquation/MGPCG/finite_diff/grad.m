@@ -1,6 +1,6 @@
 function [dx, dy, dz] = grad(x, Mask, h)
-%GRAD First order forward finite difference gradient with Dirichlet BC.
-%   Detailed explanation goes here
+%GRAD [dx, dy, dz] = grad(x, Mask, h)
+% First order forward finite difference gradient with Dirichlet BC.
 
     if nargin < 2 || isempty(Mask), Mask = true(size(x)); end
     if nargin < 3,  h = [1, 1, 1]; end

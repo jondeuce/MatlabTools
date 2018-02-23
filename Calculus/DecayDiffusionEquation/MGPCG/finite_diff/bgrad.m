@@ -1,6 +1,6 @@
 function [dx, dy, dz] = bgrad(x, Mask, h)
-%BGRAD First order backward finite difference gradient with Dirichlet BC.
-%   Detailed explanation goes here
+%BGRAD [dx, dy, dz] = bgrad(x, Mask, h)
+% First order backward finite difference gradient with Dirichlet BC.
 
     if nargin < 2 || isempty(Mask), Mask = true(size(x)); end
     if nargin < 3,  h = [1, 1, 1]; end
