@@ -31,7 +31,8 @@ function [ b, mx ] = getCylinderMask( MaskSize, VoxelSize, ...
 % OUTPUT ARGUMENTS
 %   b:      [MaskSize]	Boolean array; true if point is in any cylinder,
 %                       otherwise false
-%   mx:     [Nx1]       Array of indexes of points that are in the cylinder
+%   mx:     {1xP}       Cell array of lists of indices of points that are
+%                       each of the P cylinders
 
 %==========================================================================
 % Parse Inputs
@@ -69,7 +70,7 @@ if nargin < 13
 end
 
 if nargin < 14
-    mx      =   [];
+    mx      =   {};
 end
 
 if nargin < 15 || isempty(is_2D)
@@ -196,7 +197,7 @@ Cyl     =   Cyl(idx,:);
 
 if ~isempty( Cyl )
     Cyl     =   unique(sub2ind( MaskSize, Cyl(:,1), Cyl(:,2), Cyl(:,3) ));
-    mx      =   [mx;Cyl];
+    mx      =   [mx, {Cyl}];
     b(Cyl)	=   true;
 end
 
@@ -225,6 +226,6 @@ else
 end
 
 idx	=	(1:numel(Cyl))';
-mx	=	[mx;idx(Cyl)];
+mx	=	[mx, {idx(Cyl)}];
 
 end

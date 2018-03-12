@@ -12,7 +12,7 @@ for f = folders_to_remove_from_path
     remove_paths = what(f{1});
     
     for ii = 1:length(remove_paths)
-        rmpath(genpath_exclude(remove_paths(ii).path,{'\.git'}));
+        rmpath(genpath(remove_paths(ii).path));
     end
 end
 

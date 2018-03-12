@@ -1,6 +1,7 @@
-function h=spherePlot(r0,r,fignum)
+function h=spherePlot(r0,r,fignum,n)
 
-n=20;
+if nargin < 4; n=20; end
+
 theta = (-n:2:n)/n*pi;
 phi = (-n:2:n)'/n*pi/2;
 cosphi = cos(phi); cosphi(1) = 0; cosphi(n+1) = 0;
