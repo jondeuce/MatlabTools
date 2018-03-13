@@ -119,6 +119,11 @@ for ii = 1:size(p,2)
             tmin(ii), tmax(ii), Lmid(:,ii), Pmin(ii), Pmax(ii), MaskSize, prec );
     end
     
+    if ~isequal(size(mx),[1,ii])
+        [ b, mx ]	=	mask_iter(  b, mx, p(:,ii), vz(:,ii), r(ii), vx(:,ii), vy(:,ii),...
+            tmin(ii), tmax(ii), Lmid(:,ii), Pmin(ii), Pmax(ii), MaskSize, prec );
+    end
+
 end
 
 end
@@ -126,6 +131,7 @@ end
 function [ b, mx ] = mask_iter(b,mx,p,vz,r,vx,vy,tmin,tmax,Lmid,Pmin,Pmax,MaskSize,prec)
 
 if isnan(tmin) || isnan(tmax)
+    mx = [mx, {[]}];
     return
 end
 
@@ -196,10 +202,11 @@ Cyl     =   Cyl(idx,:);
 %}
 
 if ~isempty( Cyl )
-    Cyl     =   unique(sub2ind( MaskSize, Cyl(:,1), Cyl(:,2), Cyl(:,3) ));
-    mx      =   [mx, {Cyl}];
-    b(Cyl)	=   true;
+    Cyl    = unique(sub2ind( MaskSize, Cyl(:,1), Cyl(:,2), Cyl(:,3) ));
+    b(Cyl) = true;
 end
+
+mx = [mx, {Cyl}];
 
 end
 
