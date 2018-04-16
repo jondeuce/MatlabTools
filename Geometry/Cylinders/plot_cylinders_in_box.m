@@ -20,7 +20,7 @@ for ii = 1:size(p,2)
 end
 
 axis image
-axis( (1+1e-4) * BoxBounds(:)' )
+axis( (1+1e-2) * BoxBounds(:)' )
 
 xlabel('x'); ylabel('y'); zlabel('z');
 if ~isempty( titlestr ); title( titlestr ); end;
