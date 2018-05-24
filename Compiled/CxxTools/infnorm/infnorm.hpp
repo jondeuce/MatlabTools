@@ -12,7 +12,7 @@
 #include <omp.h>
 #include <iostream>
 #include <Eigen/Dense>
-#include <blaze/Math.h>
+// #include <blaze/Math.h>
 
 #define INFNORM_EIGEN_ARRAYS //define for using Eigen arrays
 // #define INFNORM_BLAZE_ARRAYS //define for using blaze arrays
@@ -54,17 +54,17 @@ template <typename Derived>
     return sqrt((xr*xr+xi*xi).maxCoeff());
 }
 
-template <typename Derived, bool TF = blaze::defaultTransposeFlag>
-        inline auto infnorm(const blaze::DenseVector<Derived,TF>& x)
-{
-    return max(abs(x));
-}
-
-template <typename Derived, bool TF = blaze::defaultTransposeFlag>
-        inline auto infnorm(const blaze::DenseVector<Derived,TF>& xr,
-        const blaze::DenseVector<Derived,TF>& xi)
-{
-    return sqrt(max(xr*xr+xi*xi));
-}
+// template <typename Derived, bool TF = blaze::defaultTransposeFlag>
+//         inline auto infnorm(const blaze::DenseVector<Derived,TF>& x)
+// {
+//     return max(abs(x));
+// }
+// 
+// template <typename Derived, bool TF = blaze::defaultTransposeFlag>
+//         inline auto infnorm(const blaze::DenseVector<Derived,TF>& xr,
+//         const blaze::DenseVector<Derived,TF>& xi)
+// {
+//     return sqrt(max(xr*xr+xi*xi));
+// }
 
 #endif //INFNORM_HPP
