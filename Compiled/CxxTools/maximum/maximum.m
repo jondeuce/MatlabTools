@@ -1,5 +1,9 @@
 function c=maximum(x)
-%MAXIMUM
+%MAXIMUM c=maximum(x). Returns the maximum of all elements of x. If x is
+%complex valued, the maximum value by absolute value is returned. The phase
+%of x is not checked in the case that two values have the same absolute
+%value but different phases, e.g. 1+1i and 1-1i. The result may not be
+%deterministic.
 
 % Build maximum.cpp on first call
 currentpath = cd;
