@@ -11,6 +11,7 @@ LinearAlgebra/Vector_algebra_2009/
 MathFunctions/Faddeeva_MATLAB/
 PDEs/+pcheb/
 Plotting/altmany-export_fig-d8131e4/
+IO_Helpers/append_pdfs/.ignore/*
 
 ######################
 ## MATLAB GITIGNORE ##

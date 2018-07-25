@@ -14,7 +14,7 @@ end
 
 function build_infnorm
 
-EigenPath = what('Eigen');
+EigenPath = what('MatlabTools/Compiled/Eigen');
 libincludes = {['-I"',EigenPath(1).path,'"']};
 % BlazePath = what('blaze-3.2');
 % libincludes = {['-I"',EigenPath(1).path,'"'],['-I"',BlazePath(1).path,'"']};
@@ -22,7 +22,7 @@ Cflags = '-O3 -mavx -mfma -DNDEBUG';
 if isunix; Cflags = [Cflags,' -lgomp -fopenmp']; end
 
 if ispc
-    CFLAGS = ['CFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread ',Cflags,'"'];
+    CFLAGS = ['COMPFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread ',Cflags,'"'];
     COPTIMFLAGS = ['COPTIMFLAGS="-march=native -msse2 -msse3 -O3 -flto -DNDEBUG ',Cflags,'"'];
     CXXFLAGS = ['CXXFLAGS="\$CXXFLAGS ',Cflags,'"'];
     LDOPTIMFLAGS = ['LDOPTIMFLAGS="-O3 -flto ',Cflags,'"'];
