@@ -1,7 +1,6 @@
 function [p, t] = squaremeshwithcircles( bbox, centers, radii, h0, eta, isunion )
 %SQUAREMESHWITHCIRCLES
-%      BBOX:      Bounding box [xmin, ymin
-%                               xmax, ymax]
+%      BBOX:      Bounding box [xmin, xmax, ymin, ymax]
 %      CENTRES:   Fixed node positions (NCIRCLES x 2)
 %      RADII:     Fixed node positions (NCIRCLES x 1)
 %      H0:        Initial edge length
@@ -15,11 +14,12 @@ if nargin < 6; isunion = true; end
 if nargin < 5; eta = 5; end
 if nargin < 4; h0 = boxscale/25; end
 
-corners = [bbox(1),bbox(3); bbox(2),bbox(3); bbox(1),bbox(4); bbox(2),bbox(4)];
+[x1,x2,y1,y2] = deal(bbox(1,1), bbox(2,1), bbox(1,2), bbox(2,2));
+corners = [x1,y1; x2,y1; x1,y2; x2,y2];
 circlePoints = gencirclepointsinbox(h0, bbox, centers, radii);
 circlePoints = circlePoints(isinoronbox(circlePoints, bbox, sqrt(eps(boxscale))), :);
 
-fdrectangle = @(p) drectangle(p,bbox(1),bbox(2),bbox(3),bbox(4));
+fdrectangle = @(p) drectangle(p,x1,x2,y1,y2);
 fdcircles = @(p) dcircles(p,centers(:,1),centers(:,2),radii,~isunion);
 fclamp = @(d, dmin, dmax) max(min(d, dmax), dmin);
 
@@ -44,10 +44,10 @@ pfix = unique([corners; circlePoints], 'rows');
 deps = sqrt(eps)*h0;
 approx_eq = @(a,b) abs(bsxfun(@minus,a,b))<=10*deps;
 
-p(approx_eq(p(:,1),bbox(1,1)),1) = bbox(1,1);
-p(approx_eq(p(:,1),bbox(2,1)),1) = bbox(2,1);
-p(approx_eq(p(:,2),bbox(1,2)),2) = bbox(1,2);
-p(approx_eq(p(:,2),bbox(2,2)),2) = bbox(2,2);
+p(approx_eq(p(:,1),x1),1) = x1;
+p(approx_eq(p(:,1),x2),1) = x2;
+p(approx_eq(p(:,2),y1),2) = y1;
+p(approx_eq(p(:,2),y2),2) = y2;
 
 end
 
