@@ -49,6 +49,7 @@ p(approx_eq(p(:,1),x2),1) = x2;
 p(approx_eq(p(:,2),y1),2) = y1;
 p(approx_eq(p(:,2),y2),2) = y2;
 
+
 end
 
 function [p, t] = runMinExample

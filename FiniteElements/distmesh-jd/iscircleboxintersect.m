@@ -8,4 +8,3 @@ dmins = min(xmins, ymins);
 b = dmins <= radii;
 
 end
-
