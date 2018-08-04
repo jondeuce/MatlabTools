@@ -56,7 +56,7 @@ function [p,t] = distmesh2d(fd,fh,h0,bbox,pfix,varargin)
 %   distmesh2d.m v1.1
 %   Copyright (C) 2004-2012 Per-Olof Persson. See COPYRIGHT.TXT for details.
 
-PLOT = false;
+PLOT = true;
 MAXSTALLITERS = 100;
 
 dptol = .001; ttol = .1; Fscale = 1.2; deltat = .2; geps = .001*h0; deps = sqrt(eps)*h0;
@@ -87,14 +87,14 @@ end
 while 1
     count = count+1;
     % 3. Retriangulation by the Delaunay algorithm
-    if max(sqrt(sum((p-pold).^2,2))/h0)>ttol               % Any large movement?
-        pold = p;                                          % Save current positions
-        t = delaunayn(p);                                  % List of triangles
-        pmid = (p(t(:,1),:)+p(t(:,2),:)+p(t(:,3),:))/3;    % Compute centroids
-        t = t(feval(fd,pmid,varargin{:})<-geps,:);         % Keep interior triangles
+    if count == 1 || (max(sqrt(sum((p-pold).^2,2))/h0,[],1)>ttol)  % Any large movement?
+        pold = p;                                                  % Save current positions
+        t = delaunayn(p);                                          % List of triangles
+        pmid = (p(t(:,1),:)+p(t(:,2),:)+p(t(:,3),:))/3;            % Compute centroids
+        t = t(feval(fd,pmid,varargin{:})<-geps,:);                 % Keep interior triangles
         % 4. Describe each bar by a unique pair of nodes
-        bars = [t(:,[1,2]);t(:,[1,3]);t(:,[2,3])];         % Interior bars duplicated
-        bars = unique(sort(bars,2),'rows');                % Bars as node pairs
+        bars = [t(:,[1,2]);t(:,[1,3]);t(:,[2,3])];                 % Interior bars duplicated
+        bars = unique(sort(bars,2),'rows');                        % Bars as node pairs
         % 5. Graphical output of the current mesh
         if PLOT
             cla,patch('vertices',p,'faces',t,'edgecol','k','facecol',[.8,.9,1]);
