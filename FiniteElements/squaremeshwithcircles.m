@@ -28,7 +28,7 @@ all_radii = cat(1, radii(:), inner_radii(:));
 % Fixed points
 [x1, x2, y1, y2] = deal(bbox(1,1), bbox(2,1), bbox(1,2), bbox(2,2));
 corners = [x1, y1; x2, y1; x1, y2; x2, y2];
-circlePoints = gencirclepointsinbox(h0, bbox, all_centers, all_radii);
+circlePoints = gencirclepointsinbox(h0/2, bbox, all_centers, all_radii);
 circlePoints = circlePoints(isinoronbox(circlePoints, bbox, sqrt(eps(boxscale))), :);
 
 % pfix = corners;
