@@ -40,13 +40,13 @@ function new_msg = format_paragraph(msg, line_width)
 
 % max characters per line
 if nargin < 2
-    line_width = 40;
+    line_width = 75;
 end
 
 msg = strtrim(msg);
 len = length(msg);
 if len <= line_width
-    new_msg = {strtrim(msg) '\n'};
+    new_msg = {[strtrim(msg), '\n']};
     return
 end
 

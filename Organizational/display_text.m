@@ -3,6 +3,13 @@ function new_msg = display_text( msg, line_width, break_char, is_centered, addsp
 % Displays the (potentially very long) string msg such that the
 % maximum line length width is line_width. Optionally the message can be
 % padded with strings of break_char's or be centered.
+% 
+% EXAMPLE:
+% 
+% >> display_text('WARNING: not saving results.', 50, '=')
+% ==================================================
+%            WARNING: not saving results.
+% ==================================================
 
 if nargin < 5 || isempty(addspace)
     addspace	=	[0,0];
@@ -17,6 +24,9 @@ if nargin < 4 || isempty(is_centered)
 end
 if nargin < 3 || isempty(break_char)
     break_char = '%';
+end
+if nargin < 2 || isempty(line_width)
+    line_width = 75;
 end
 
 if ~iscell(msg); msg = {msg}; end
