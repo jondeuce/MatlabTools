@@ -1,4 +1,4 @@
-function simpplot(p,t,expr,bcol,icol,nodes,tris)
+function simpplot(p,t,expr,bcol,icol,nodes,tris,facecol)
 
 %   Copyright (C) 2004-2012 Per-Olof Persson. See COPYRIGHT.TXT for details.
 
@@ -9,8 +9,14 @@ switch dim
   if nargin<5 | isempty(icol), icol=[0,0,0]; end
   if nargin<6, nodes=0; end
   if nargin<7, tris=0; end
-  
-  trimesh(t,p(:,1),p(:,2),0*p(:,1),'facecolor',bcol,'edgecolor','k');
+  if nargin<8, facecol=[]; end
+
+  if isempty(facecol)
+    trimesh(t,p(:,1),p(:,2),0*p(:,1),'facecolor',bcol,'edgecolor','k');
+  else
+    s = trisurf(t,p(:,1),p(:,2),facecol,facecol,'edgecolor','k','facecolor','interp');
+    colorbar
+  end
   if nodes==1
     line(p(:,1),p(:,2),'linest','none','marker','.','col',icol,'markers',24);
   elseif nodes==2
@@ -33,7 +39,7 @@ switch dim
  case 3
   if nargin<4 | isempty(bcol), bcol=[.8,.9,1]; end
   if nargin<5 | isempty(icol), icol=[.9,.8,1]; end
-  
+
   if size(t,2)==4
     tri1=surftri(p,t);
     if nargin>2 & ~isempty(expr)

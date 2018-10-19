@@ -1,4 +1,6 @@
-function [p, t] = squaremeshwithcircles( bbox, centers, radii, h0, eta, isunion, regiontype, inner_centers, inner_radii )
+function [p, t] = squaremeshwithcircles( bbox, centers, radii, ...
+    h0, eta, isunion, regiontype, inner_centers, inner_radii, ...
+    fixcorners, fixcirclepoints )
 %SQUAREMESHWITHCIRCLES
 %      BBOX:      Bounding box [xmin, xmax, ymin, ymax]
 %      CENTRES:   Fixed node positions (NCIRCLES x 2)
@@ -10,6 +12,8 @@ function [p, t] = squaremeshwithcircles( bbox, centers, radii, h0, eta, isunion,
 if nargin == 0; runMinExample; return; end
 
 boxscale = min(diff(bbox, 1));
+if nargin < 11; fixcirclepoints = true; end
+if nargin < 10; fixcorners = true; end
 if nargin < 9; inner_centers = []; inner_radii = []; end
 if nargin < 7; regiontype = 0; end
 if nargin < 6; isunion = true; end
@@ -26,12 +30,15 @@ all_centers = cat(1, centers, inner_centers);
 all_radii = cat(1, radii(:), inner_radii(:));
 
 % Fixed points
-[x1, x2, y1, y2] = deal(bbox(1,1), bbox(2,1), bbox(1,2), bbox(2,2));
-corners = [x1, y1; x2, y1; x1, y2; x2, y2];
-circlePoints = gencirclepointsinbox(h0/2, bbox, all_centers, all_radii);
-circlePoints = circlePoints(isinoronbox(circlePoints, bbox, sqrt(eps(boxscale))), :);
-
-% pfix = corners;
+[corners, circlePoints] = deal([]);
+if fixcorners
+    [x1, x2, y1, y2] = deal(bbox(1,1), bbox(2,1), bbox(1,2), bbox(2,2));
+    corners = [x1, y1; x2, y1; x1, y2; x2, y2];
+end
+if fixcirclepoints
+    circlePoints = gencirclepointsinbox(h0/2, bbox, all_centers, all_radii);
+    circlePoints = circlePoints(isinoronbox(circlePoints, bbox, sqrt(eps(boxscale))), :);
+end
 pfix = unique([corners; circlePoints], 'rows');
 
 % Distance functions

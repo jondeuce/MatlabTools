@@ -25,7 +25,7 @@ if nargin >= 4 && ~isempty( NumCylinders ) && ( NumCylinders ~= n )
 end
 
 if nargin < 5 || isempty( CylOrientation )
-    CylOrientation	=   false;
+    CylOrientation	=   'random';
 end
 
 if nargin < 6 || isempty( PlotCylinders )

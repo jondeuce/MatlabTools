@@ -57,7 +57,7 @@ function [p,t] = distmesh2d(fd,fh,h0,bbox,pfix,varargin)
 %   Copyright (C) 2004-2012 Per-Olof Persson. See COPYRIGHT.TXT for details.
 
 PLOT = true;
-MAXSTALLITERS = 100;
+MAXSTALLITERS = 500;
 
 dptol = .001; ttol = .1; Fscale = 1.2; deltat = .2; geps = .001*h0; deps = sqrt(eps)*h0;
 densityctrlfreq = 30;
@@ -71,6 +71,7 @@ p = [x(:),y(:)];                                       % List of node coordinate
 p = p(feval(fd,p,varargin{:})<geps,:);                 % Keep only d<0 points
 r0 = 1./feval(fh,p,varargin{:}).^2;                    % Probability to keep point
 p = p(rand(size(p,1),1)<r0./max(r0),:);                % Rejection method
+% p = p(sin(1:size(p,1)).'<r0./max(r0),:);               % Rejection method (deterministic)
 if ~isempty(pfix), p = setdiff(p,pfix,'rows'); end     % Remove duplicated nodes
 pfix = unique(pfix,'rows'); nfix = size(pfix,1);
 p = [pfix; p];                                         % Prepend fix points
