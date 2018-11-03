@@ -187,7 +187,7 @@ Cyl     =	bsxfun( @plus, Cyl, Lmid' );
 Cyl     =   round( Cyl );
 idx     =   all(	bsxfun( @ge, Cyl, [1,1,1] )     &	...
                     bsxfun( @le, Cyl, MaskSize ),   2   );
-Cyl     =   Cyl(idx,:);
+Cyl     =   Cyl(idx, :);
 
 %{
     % Ensure that all cylinders meet at least two faces
@@ -204,6 +204,8 @@ Cyl     =   Cyl(idx,:);
 if ~isempty( Cyl )
     Cyl    = unique(sub2ind( MaskSize, Cyl(:,1), Cyl(:,2), Cyl(:,3) ));
     b(Cyl) = true;
+else
+    Cyl    = []; % Cyl is 0x3 --> 0x0 for consistency
 end
 
 mx = [mx, {Cyl}];
