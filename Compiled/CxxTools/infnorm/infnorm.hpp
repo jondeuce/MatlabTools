@@ -19,18 +19,22 @@
 
 #ifdef INFNORM_EIGEN_ARRAYS
 /* Eigen typedefs */
-inline namespace Eigen {
-    typedef Map<ArrayXd> VecXd;
-    typedef Map<ArrayXf> VecXf;
-}
+using VecXd = Eigen::Map<Eigen::ArrayXd>;
+using VecXf = Eigen::Map<Eigen::ArrayXf>;
+// inline namespace Eigen {
+//     typedef Map<ArrayXd> VecXd;
+//     typedef Map<ArrayXf> VecXf;
+// }
 #endif
 
 #ifdef INFNORM_BLAZE_ARRAYS
 /* Blaze typedefs */
-inline namespace blaze {
-    using VecXd = CustomVector<double,aligned,unpadded,columnVector>;
-    using VecXf = CustomVector<float, aligned,unpadded,columnVector>;
-}
+using VecXd = blaze::CustomVector<double,blaze::aligned,blaze::unpadded,blaze::columnVector>;
+using VecXf = blaze::CustomVector<float, blaze::aligned,blaze::unpadded,blaze::columnVector>;
+// inline namespace blaze {
+//     using VecXd = CustomVector<double,aligned,unpadded,columnVector>;
+//     using VecXf = CustomVector<float, aligned,unpadded,columnVector>;
+// }
 #endif
 
 template <typename Derived>
@@ -43,7 +47,7 @@ template <typename Derived>
 //     auto n_set = Eigen::nbThreads();
 //     mexPrintf("n_set = %d\n",n_set);
 //     return x.abs().maxCoeff();
-    return (x.matrix()).template lpNorm<Infinity>();
+    return (x.matrix()).template lpNorm<Eigen::Infinity>();
 }
 
 template <typename Derived>

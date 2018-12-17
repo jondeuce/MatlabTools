@@ -14,10 +14,12 @@
 #include <Eigen/Dense>
 
 /* Eigen typedefs */
-inline namespace Eigen {
-    typedef Map<ArrayXd> VecXd;
-    typedef Map<ArrayXf> VecXf;
-}
+using VecXd = Eigen::Map<Eigen::ArrayXd>;
+using VecXf = Eigen::Map<Eigen::ArrayXf>;
+// inline namespace Eigen {
+//     typedef Map<ArrayXd> VecXd;
+//     typedef Map<ArrayXf> VecXf;
+// }
 
 template <typename Derived>
         inline auto minimum(

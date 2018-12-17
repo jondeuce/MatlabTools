@@ -18,7 +18,7 @@ end
 
 function build_maximum
 
-EigenPath = what('Eigen');
+EigenPath = what('MatlabTools/Compiled/Eigen-3.3.7');
 libincludes = {['-I"',EigenPath(1).path,'"']};
 % BlazePath = what('blaze-3.2');
 % libincludes = {['-I"',EigenPath(1).path,'"'],['-I"',BlazePath(1).path,'"']};
