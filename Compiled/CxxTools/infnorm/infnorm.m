@@ -1,38 +1,24 @@
-function c=infnorm(x)
-%INFNORM
+function [v] = infnorm(x)
+%INFNORM Infinity norm of the N-D array x, interpreted as a vector.
 
-% Build infnorm.cpp on first call
-currentpath = cd;
-cd(fileparts(mfilename('fullpath')));
-build_infnorm;
-cd(currentpath);
+if isreal(x)
+    v = max(maximum(x), -minimum(x));
+else
+    % Despite the extra allocation, maximum(x2) is actually faster than
+    % abs(maximum(x)), since max of a complex array (checking for magnitude
+    % equality and then comparing phase) is fundamentally slow.
+    % Unfortunately, this also implies that there is a lot to gain by
+    % re-writing this in C in order to avoid allocation abs(x) or abs2(x),
+    % as well as avoiding all those square roots.
+    x2 = real(x).^2 + imag(x).^2; % this is faster than abs(x)
+    %x2 = x .* conj(x); % slower than above, since it does cplx mul
+    v = sqrt(maximum(x2));
+    %v = maximum(abs(x)); % faster than abs(maximum(x))
+    %v = abs(maximum(x));
+end
 
-% Call compiled code
-c=infnorm(x);
+% This is ~2X slower for large real arrays, and ~30X slower for complex!
+% v = norm(x(:), Inf);
 
 end
 
-function build_infnorm
-
-EigenPath = what('MatlabTools/Compiled/Eigen-3.3.7');
-libincludes = {['-I"',EigenPath(1).path,'"']};
-% BlazePath = what('blaze-3.2');
-% libincludes = {['-I"',EigenPath(1).path,'"'],['-I"',BlazePath(1).path,'"']};
-Cflags = '-O3 -mavx -mfma -DNDEBUG';
-if isunix; Cflags = [Cflags,' -lgomp -fopenmp']; end
-
-if ispc
-    CFLAGS = ['COMPFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread ',Cflags,'"'];
-    COPTIMFLAGS = ['COPTIMFLAGS="-march=native -msse2 -msse3 -O3 -flto -DNDEBUG ',Cflags,'"'];
-    CXXFLAGS = ['CXXFLAGS="\$CXXFLAGS ',Cflags,'"'];
-    LDOPTIMFLAGS = ['LDOPTIMFLAGS="-O3 -flto ',Cflags,'"'];
-elseif isunix
-    CFLAGS = ['CFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread -fopenmp ',Cflags,'"'];
-    COPTIMFLAGS = ['COPTIMFLAGS="-march=native -msse2 -msse3 -O3 -flto -DNDEBUG ',Cflags,'"'];
-    CXXFLAGS = ['CXXFLAGS="\$CXXFLAGS -std=c++1y"'];
-    LDOPTIMFLAGS = ['LDOPTIMFLAGS="-O3 -flto ',Cflags,'"'];
-end
-
-mex(CFLAGS,COPTIMFLAGS,CXXFLAGS,LDOPTIMFLAGS,libincludes{:},'infnorm.cpp');
-%'OMP_NUM_THREADS=4',
-end
