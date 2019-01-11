@@ -1,8 +1,11 @@
-function [varargout] = disp_wide(A, varargin)
-%DISP_WIDE Displays the matrix A without wrapping.
+function [varargout] = disp_wide(A, repzeroes, varargin)
+%DISP_WIDE Displays the matrix A without wrapping. `repzeroes` replaces '0'
+%with ' ' everywhere. `varargin` is forwarded to `num2str`.
+
+if nargin < 2; repzeroes = false; end
 
 S = num2str(A, varargin{:});
-S = reshape(strrep(S(:).', '0', ' ').', size(S));
+if repzeroes; S = reshape(strrep(S(:).', '0', ' ').', size(S)); end
 
 fprintf('\n');
 for ii = 1:size(S,1)
