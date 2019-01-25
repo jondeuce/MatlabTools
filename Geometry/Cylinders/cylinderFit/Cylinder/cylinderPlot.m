@@ -9,18 +9,17 @@ function [h,x,y,z]=cylinderPlot( q,v,r,height,fig,col,alpha )
 
 if nargin < 7; alpha = 0.2; end
 if nargin < 6; col = 'b'; end
-if nargin < 5 || isempty(fig), figure(gcf); else figure(fig); end
-hold on, axis image
+if nargin < 5 || isempty(fig); fig = figure; end
 
+axis image
 [hh,xx,yy,zz]=Cylinder(q-height/2*v,q+height/2*v,r,20,col,1,0,alpha);
 
 % view([0.5852    0.7752    0.2380]);
 % length=50; baseangle=60; tipangle=30; width=20;
 % properties={length,baseangle,tipangle,width};
 % arrow(q-height/2*v,q+height/2*v,properties{:},'FaceColor','c');
-hold off;
 
-if nargout>0; h=hh; x=xx; y=yy; z=zz; end;
+if nargout>0; h=hh; x=xx; y=yy; z=zz; end
 
 end
 

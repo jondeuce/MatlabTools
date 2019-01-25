@@ -1,4 +1,4 @@
-function h = rectpatchPlot( m, fig )
+function [H,Fig] = rectpatchPlot( m, fig )
 %RECTPRISMPLOT plots the rectangular prism defined by extent m
 % 
 % input:
@@ -14,20 +14,16 @@ x=[0 1 1 0 0 0;1 1 0 0 1 1;1 1 0 0 1 1;0 1 1 0 0 0]*(m(2,1)-m(1,1))+m(1,1);
 y=[0 0 1 1 0 0;0 1 1 0 0 0;0 1 1 0 1 1;0 0 1 1 1 1]*(m(2,2)-m(1,2))+m(1,2);
 z=[0 0 0 0 0 1;0 0 0 0 0 1;1 1 1 1 0 1;1 1 1 1 0 1]*(m(2,3)-m(1,3))+m(1,3);
 
-if nargin < 2, figure;
-else figure(fig);
-end
+if nargin < 2; fig = figure; end
 
-hold on;
-hh=[];
+h = zeros(6,1);
 for ii = 1:6
-    hh = [ hh; patch(x(:,ii),y(:,ii),z(:,ii),'b') ];
+    h(ii) = patch(gca(fig), x(:,ii), y(:,ii), z(:,ii), 'b');
 end
+set(h, 'edgecolor', 'k', 'facealpha', 0);
 
-set(hh,'edgecolor','k','facealpha',0)
-hold off;
-
-if nargout>0; h=hh; end;
+if nargout>0; H=h; end
+if nargout>1; Fig=fig; end
 
 end
 
