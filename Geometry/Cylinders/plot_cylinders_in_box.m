@@ -13,8 +13,13 @@ BoxBounds = [ BoxCenter(:)' - 0.5*BoxDims(:)'
               BoxCenter(:)' + 0.5*BoxDims(:)' ];
 [~, fig] = rectpatchPlot( BoxBounds, fig );
 
+ii_print = round(linspace(1,size(p,2),11)); % Print 0%, 10%, ..., 100%
+print_count = 1;
 for ii = 1:size(p,2)
-    if verb; fprintf('Minor cylinder %d/%d\n', ii, size(p,2)); end
+    if verb && ii == ii_print(print_count)
+        fprintf('Plotting cylinders... (%d%% complete)\n', round(100*ii/size(p,2)));
+        print_count = print_count + 1;
+    end
     cylinderPlot( p(:,ii), v(:,ii), r(ii), 2*norm(BoxDims), fig, col, alpha );
 end
 
