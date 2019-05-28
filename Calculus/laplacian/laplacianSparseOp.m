@@ -87,7 +87,7 @@ function [lambda, V, A] = laplacianSparseOp(varargin)
 %    $Revision: 1.1 $ $Date: 1-Aug-2011
 %    Tested in MATLAB 7.11.0 (R2010b) and Octave 3.4.0.
 
-tic
+% tic
 
 % Input/Output handling.
 if nargin > 3
@@ -482,15 +482,15 @@ if nargout > 2 %also calulate the matrix if specified in the output
     end
 end
 
-disp('  ')
-toc
-if ~isempty(V)
-    a = whos('regep','V');
-    disp(['The eigenvectors take ' num2str(a.bytes) ' bytes'])
-end
-if  ~isempty(A)
-    a = whos('regexp','A');
-    disp(['The Laplacian matrix takes ' num2str(a.bytes) ' bytes'])
-end
-disp('  ')
+% disp('  ')
+% toc
+% if ~isempty(V)
+%     a = whos('regep','V');
+%     disp(['The eigenvectors take ' num2str(a.bytes) ' bytes'])
+% end
+% if  ~isempty(A)
+%     a = whos('regexp','A');
+%     disp(['The Laplacian matrix takes ' num2str(a.bytes) ' bytes'])
+% end
+% disp('  ')
 
