@@ -5,14 +5,3 @@ function [ L ] = raySphereIntersectionLength( Origins, Directions, SphereRadius,
 L = tmax - tmin;
 
 end
-
-
-
-
-
-
-
-
-
-
-

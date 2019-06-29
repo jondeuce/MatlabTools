@@ -1,9 +1,0 @@
-%==========================================================================
-% periodic decay diffusion operator
-%==========================================================================
-
-% complex double version
-mex CFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread" ...
-    COPTIMFLAGS="-march=native -msse2 -msse3 -Ofast -flto -DNDEBUG" ...
-    LDOPTIMFLAGS="-Ofast -flto" ...
-    fmg_diffuse_cd.c

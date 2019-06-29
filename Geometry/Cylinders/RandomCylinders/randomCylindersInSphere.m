@@ -38,9 +38,9 @@ while true
     % Uniformly random points within a sphere (for p_; v_ is a random direction):
     % https://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
     p_ = randn(3, Chunk);
-    p_ = p_ .* (SphereRadius .* rand(1, Chunk).^(1/3) ./ sqrt(sum(p_.^2, 1)));
+    p_ = bsxfun(@times, p_, SphereRadius .* rand(1, Chunk).^(1/3) ./ sqrt(sum(p_.^2, 1)));
     v_ = randn(3, Chunk);
-    v_ = v_ ./ sqrt(sum(v_.^2, 1));
+    v_ = bsxfun(@rdivide, v_, sqrt(sum(v_.^2, 1)));
     r_ = RadiiFunction(1, Chunk);
     
     p = cat(2, p, p_);

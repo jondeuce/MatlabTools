@@ -2,6 +2,9 @@
 % periodic laplacian
 %==========================================================================
 
+CALLING_DIRECTORY = pwd;
+cd(fileparts(mfilename('fullpath')));
+
 % single version
 mex CFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread -fopenmp" ...
     COPTIMFLAGS="-march=native -msse2 -msse3 -Ofast -flto -DNDEBUG" ...
@@ -25,3 +28,6 @@ mex CFLAGS="-fexceptions -fPIC -fno-omit-frame-pointer -pthread -fopenmp" ...
     COPTIMFLAGS="-march=native -msse2 -msse3 -Ofast -flto -DNDEBUG" ...
     LDOPTIMFLAGS="-Ofast -flto" ...
     -lgomp fmg_lap_per_cd.c
+
+cd(CALLING_DIRECTORY)
+clear CALLING_DIRECTORY
