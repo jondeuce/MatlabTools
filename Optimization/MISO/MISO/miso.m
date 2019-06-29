@@ -1,5 +1,4 @@
-function [xbest, fbest] = miso(datafile, maxeval, surrogate, n_start, init_design, sampling, own_design)
-
+function [xbest, fbest, sol] = miso(datafile, maxeval, surrogate, n_start, init_design, sampling, own_design, savefile)
 
 % miso.m is a surrogate model based optimization algorithm that aims at
 % finding a (near) optimal solution of computationally expensive, black-box,
@@ -28,50 +27,31 @@ function [xbest, fbest] = miso(datafile, maxeval, surrogate, n_start, init_desig
 %juliane.mueller2901@gmail.com
 %--------------------------------------------------------------------------
 
-
-
-
 global sampledata %global variable to collect sample data
 sampledata = []; %initialize sampledata to empty matrix
 
 %% check user inputs
-if nargin <1 %user forgot to give file name with problem definition
+if nargin < 1 %user forgot to give file name with problem definition
     error('You must provide a data file with the problem definition')
 end
-%check how many input arguments are given and assign [ ] to values that
-%were not supplied
-if nargin == 1
-    maxeval = [];
-    surrogate = [];
-    n_start = [];
-    init_design = [];
-    sampling = [];
-    own_design = [];
-elseif nargin == 2
-    surrogate = [];
-    n_start = [];
-    init_design = [];
-    sampling = [];
-    own_design = [];
-elseif nargin == 3
-    n_start = [];
-    init_design = [];
-    sampling = [];
-    own_design = [];
-elseif nargin == 4
-    init_design = [];
-    sampling = [];
-    own_design = [];
-elseif nargin == 5
-    sampling = [];
-    own_design = [];
-elseif nargin == 6
-    own_design = [];
-end
 
+%check how many input arguments are given and assign [] to values that were not supplied
+if nargin < 8; savefile = ''; end
+if nargin < 7; own_design = []; end
+if nargin < 6; sampling = []; end
+if nargin < 5; init_design = []; end
+if nargin < 4; n_start = []; end
+if nargin < 3; surrogate = []; end
+if nargin < 2; maxeval = []; end
 
 %load optimization problem data from user-defined file
-Data = feval(datafile); % load problem data
+if ischar(datafile)
+    Data = feval(datafile); % load problem data
+elseif isstruct(datafile)
+    Data = datafile; % datafile is a struct
+else
+    Data = datafile(); % datafile is a zero-argument function returning a struct
+end
 
 %check if max number of function evaluations is defined by user
 if isempty(maxeval) %use default max number of allowed function evaluations
@@ -96,7 +76,7 @@ if isempty(n_start) && isempty(own_design) %number of start points not defined, 
     disp('Using default number of initial design points (2*(dimension+1))!')
     n_start = 2*(Data.dim+1); %default initial design size
 else
-    if ~isempty(n_start) && n_start<Data.dim+1 && isempty(own_design)
+    if ~isempty(n_start) && n_start < Data.dim+1 && isempty(own_design)
         disp('The number of deisgn points must be at least (dimension + 1). Using (dimension +1) design points!')
         n_start = Data.dim + 1;
     end
@@ -206,17 +186,17 @@ Data.xbest = Data.S(fbest_ID,:); %best point so far
 
 
 %% sampling
-if strcmp(Data.sampling, 'cp') %candidates by perturbation of randomly selected variables
+if strcmp(Data.sampling, 'cp') % candidates by perturbation of randomly selected variables
     sol = cp(Data);
-elseif strcmp(Data.sampling, 'tv') %target value strategy
+elseif strcmp(Data.sampling, 'tv') % target value strategy
     sol = tv(Data);
-elseif strcmp(Data.sampling,'ms') %surface minimum
+elseif strcmp(Data.sampling, 'ms') % surface minimum
     sol = ms(Data);
-elseif strcmp(Data.sampling, 'rs') %random candidates by perturbing all variables
+elseif strcmp(Data.sampling, 'rs') % random candidates by perturbing all variables
     sol = rs(Data);
 elseif strcmp(Data.sampling, 'cptv') % cp+tv
     sol = cptv(Data);
-elseif strcmp(Data.sampling,'cptvl') % cp + tv + fmincon on continuous variables
+elseif strcmp(Data.sampling, 'cptvl') % cp + tv + fmincon on continuous variables
     sol = cptvl(Data);
 else
     error('Sampling procedure not included');
@@ -226,7 +206,9 @@ fbest = sol.fbest;
 sol.total_T = toc(TimeStart); %stop timer for optimization
 
 %% saving
-save results.mat sol %save results
+if ~isempty(savefile)
+    save(savefile, 'sol') %save results
+end
 
 %% plot progress curve
 %yvals contains the best function value found so far

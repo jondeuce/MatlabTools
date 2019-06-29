@@ -1,4 +1,4 @@
-function yhat = rbf_prediction(CandPoint,Data,lambda, gamma, rbf_flag )
+function yhat = rbf_prediction(CandPoint, Data, lambda, gamma, rbf_flag)
 
 
 % compute the predicted objuective function value
