@@ -139,12 +139,14 @@ D       =   2 * r; % cyl. diameter
 %       =   2 * sqrt(sum(MaskSize.^2)); % Worst case cyl length: twice the longest diagonal
 L       =   tmax - tmin; % cyl. length from center to center
 
-[N1,N2]	=   deal( zeros(3,1) );
-N1(Pmin)=	1;
-N2(Pmax)=	1;
-[t1,t2]	=   deal( minAngle3D(vz,N1), minAngle3D(vz,N2) );
-Lbot	=   D * tan(t1); % add length contributions from glancing incidence of cyl.
-Ltop	=   D * tan(t2); % at top and bottom ends
+% [N1,N2]	=   deal( zeros(3,1) );
+% N1(Pmin)=	1;
+% N2(Pmax)=	1;
+% [t1,t2]	=   deal( minAngle3D(vz,N1), minAngle3D(vz,N2) );
+% Lbot	=   D * tan(t1); % add length contributions from glancing incidence of cyl.
+% Ltop	=   D * tan(t2); % at top and bottom ends
+Lbot    =   0.25;
+Ltop    =   0.25;
 
 % Multiply by 1.6 instead of 1 to ensure no points are missed
 nxy     =	ceil( 1.6 * D );

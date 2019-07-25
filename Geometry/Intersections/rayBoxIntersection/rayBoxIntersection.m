@@ -36,9 +36,9 @@ function [tmin,tmax,Lmin,Lmax,Pmin,Pmax] = rayBoxIntersection_ND( p, v, B, B0 )
 
 f_sign	=   @(x) sign(x) + (x==0); % sign(0) := 1
 f_tmin	=	@(p,v,B,B0,ii)	bsxfun( @rdivide, ...
-        B0(ii) - 0.5 * B(ii) * f_sign(v(ii,:)) - p(ii,:), v(ii,:) );
+        B0(ii) - 0.5 * B(ii) * f_sign(v(ii,:)) - p(ii,:), v(ii,:) ); %f_sign(v(ii,:)) .* max(abs(v(ii,:)), eps) );
 f_tmax	=	@(p,v,B,B0,ii)	bsxfun( @rdivide, ...
-        B0(ii) + 0.5 * B(ii) * f_sign(v(ii,:)) - p(ii,:), v(ii,:) );
+        B0(ii) + 0.5 * B(ii) * f_sign(v(ii,:)) - p(ii,:), v(ii,:) ); %, f_sign(v(ii,:)) .* max(abs(v(ii,:)), eps) );
 
 tmin	=   f_tmin( p, v, B, B0, 1 );
 tmax	=   f_tmax( p, v, B, B0, 1 );
@@ -55,6 +55,9 @@ for ii	=  	2:size(p,1)
     
     t0      =   f_tmin( p, v, B, B0, ii );
     t1      =   f_tmax( p, v, B, B0, ii );
+    
+    t0(v(ii,:) == 0) = -Inf;
+    t1(v(ii,:) == 0) = +Inf;
     
     bnew	=   ( tmin > t1 ) | ( tmax < t0 );
     b       =   b | bnew;
