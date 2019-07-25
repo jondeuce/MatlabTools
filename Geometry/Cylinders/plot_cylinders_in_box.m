@@ -24,7 +24,9 @@ for ii = 1:size(p,2)
 end
 
 axis image
-axis( (1+1e-2) * BoxBounds(:)' )
+DilatationFact = 1 + 1e-2;
+DilatedBoxBounds = bsxfun(@plus, BoxCenter, DilatationFact * bsxfun(@minus, BoxBounds, BoxCenter));
+axis(DilatedBoxBounds(:)');
 
 xlabel('x'); ylabel('y'); zlabel('z');
 if ~isempty( titlestr ); title( titlestr ); end
