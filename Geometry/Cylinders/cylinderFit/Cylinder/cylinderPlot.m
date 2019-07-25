@@ -12,7 +12,7 @@ if nargin < 6; col = 'b'; end
 if nargin < 5 || isempty(fig); fig = figure; end
 
 axis image
-[hh,xx,yy,zz]=Cylinder(q-height/2*v,q+height/2*v,r,20,col,1,0,alpha);
+[hh,xx,yy,zz]=Cylinder(q-height/2*v,q+height/2*v,r,20,col,false,false,alpha);
 
 % view([0.5852    0.7752    0.2380]);
 % length=50; baseangle=60; tipangle=30; width=20;

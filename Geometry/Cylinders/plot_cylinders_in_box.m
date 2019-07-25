@@ -20,7 +20,12 @@ for ii = 1:size(p,2)
         fprintf('Plotting cylinders... (%d%% complete)\n', round(100*ii/size(p,2)));
         print_count = print_count + 1;
     end
-    cylinderPlot( p(:,ii), v(:,ii), r(ii), 2*norm(BoxDims), fig, col, alpha );
+    % Compute the midpoint and height of the cylinder to be plotted
+    [tmin, tmax, ~, ~, pmid] = rayBoxIntersection( p(:,ii), v(:,ii), BoxDims, BoxCenter );
+    if ~isnan(tmin) && ~isnan(tmax)
+        cylheight = tmax - tmin;
+        cylinderPlot( pmid, v(:,ii), r(ii), cylheight, fig, col, alpha );    
+    end
 end
 
 axis image
